@@ -1,18 +1,17 @@
 <template>
   <div>
-  
+
   <div id ="app">
     <div>这是{{count}}</div>
-    <button v-on:click="to0">asd</button>
-    <el-menu
-  :default-active="activeIndex2"
+    <el-button >count+</el-button>
+    <el-menu :default-active="activeIndex2"
   class="el-menu-demo"
   mode="horizontal"
   @select="handleSelect"
   background-color="#545c64"
   text-color="#fff"
   active-text-color="#ffd04b">
-  <el-menu-item index="1" @click = "to0">首页</el-menu-item>
+  <el-menu-item index="1" @click.native = "to0">首页</el-menu-item>
   <el-submenu index="2">
     <template slot="title">我要借款</template>
     <el-menu-item index="2-1">借款申请</el-menu-item>
@@ -52,8 +51,8 @@
     <el-menu-item index="4-1">用户管理</el-menu-item>
     <el-menu-item index="4-2">理财产品管理</el-menu-item>
   </el-submenu>
-  <el-menu-item index="1">登录/注册</el-menu-item>
- 
+  <el-menu-item index="9">登录/注册</el-menu-item>
+
 </el-menu>
 
   </div>
@@ -62,22 +61,19 @@
 
 <script>
 export default {
-   data() {
-      return {
-        activeIndex: '1',
-        activeIndex2: '1',
-        pos: 3,
-        count:1,
-      };
-    },
-    methods: {
-      to0(){
-        count++;
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
+  data: function () {
+    return {
+      activeIndex: '1',
+      activeIndex2: '1',
+      pos: 3,
+      count: 1
     }
+  },
+  methods: {
+    to0: function () {
+      count ++
+    }
+  }
 
 }
 </script>
