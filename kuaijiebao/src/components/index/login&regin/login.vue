@@ -68,7 +68,7 @@ export default {
 
         height: '100%',
 
-        backgroundImage: 'url(' + require('../assets/1.jpg') + ')',
+        backgroundImage: 'url(' + require('../../../assets/1.jpg') + ')',
 
         backgroundSize: '100% 100%',
 

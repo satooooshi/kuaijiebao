@@ -1,114 +1,81 @@
 <template>
   <div>
-
-    <div id ="app">
-      <el-aside>
-        <el-row class="tac">
-          <el-col :span="12">
-            <el-row>
-            <h4>快借宝</h4>
-            <el-button type="text">登录/注册</el-button>
-            </el-row>
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose">
-
-              <el-submenu index="1">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>我要借款</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="1-1">借款申请</el-menu-item>
-                  <el-menu-item index="1-2">借款管理</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-              <el-submenu index="2">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>我要理财</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="2-1">理财产品管理</el-menu-item>
-                  <el-menu-item index="2-2">我的债权</el-menu-item>
-                  <el-menu-item index="2-3">债权转让</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-              <el-submenu index="3">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>信用管理</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="3-1">信用查询</el-menu-item>
-                  <el-menu-item index="3-2">信用额度管理</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-              <el-submenu index="4">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>咨询</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="4-1">常见问题咨询</el-menu-item>
-                  <el-menu-item index="4-2">在线咨询</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-              <el-submenu index="5">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>数据统计</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="5-1">借还款统计</el-menu-item>
-                  <el-menu-item index="5-2">理财统计</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-              <el-submenu index="6">
-                <template slot="title">
-                  <i class="el-icon-star-on"></i>
-                  <span>个人中心</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="6-1">个人信息管理</el-menu-item>
-                  <el-menu-item index="6-2">个人安全管理</el-menu-item>
-                  <el-menu-item index="6-3">银行卡管理</el-menu-item>
-                  <el-menu-item index="6-4">退出登录</el-menu-item>
-                </el-menu-item-group>
-              </el-submenu>
-
-            </el-menu>
-          </el-col>
-        </el-row>
-      </el-aside>
+  <div>
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu-item index="1">首页</el-menu-item>
+      <el-menu-item index="2">我要借款</el-menu-item>
+      <el-menu-item index="3">我要理财</el-menu-item>
+      <el-menu-item index="4">信用管理</el-menu-item>
+      <el-menu-item index="5">数据统计</el-menu-item>
+      <el-menu-item index="6">咨询</el-menu-item>
+      <el-menu-item index="7">个人中心</el-menu-item>
+      <el-menu-item index="8">登录/注册</el-menu-item>
+    </el-menu>
+    <p>欢迎使用快借宝！</p>
+  </div>
+    <div>
+      <el-carousel height="500px" width="200px" type="card">
+        <el-carousel-item v-for="item in imgList" :key="item" height="500px"  width="200px">
+          <h3><img :src="item" alt=""> </h3>
+        </el-carousel-item>
+      </el-carousel>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      imgList: [
+        require('../assets/a1.jpeg'),
+        require('../assets/a2.jpeg'),
+        require('../assets/a3.jpeg'),
+        require('../assets/a4.jpeg'),
+        require('../assets/a5.jpeg')
+      ]
+    }
+  },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+    handleSelect (key, keyPath) {
+      switch (key) {
+        case '1':
+          this.$router.push('/home')
+          break
+        case '2':
+          this.$router.push('/borrow_money')
+          break
+        case '3':
+          this.$router.push('/money_management')
+          break
+        case '4':
+          this.$router.push('/borrow_money')
+          break
+        case '5':
+          this.$router.push('/borrow_money')
+          break
+        case '6':
+          this.$router.push('/borrow_money')
+          break
+        case '7':
+          this.$router.push('/borrow_money')
+          break
+        case '8':
+          this.$router.push('/login')
+          break
+      }
     }
   }
 }
-</script>
 
-<style>
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
+</script>
+.el-carousel__item h3 {
+color: #475669;
+font-size: 14px;
+opacity: 0.75;
+line-height: 200px;
+margin: 0;
+}
+<style scoped>
+
 </style>

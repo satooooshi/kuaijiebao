@@ -3,8 +3,11 @@
 /* eslint-disable */
 import Vue from 'vue'
 import App from './App'
-import home from './components/homepage'
-import router from './router'
+import homepage from './components/homepage'
+import header from './components/header'
+import borrow_money from './components/sidemenu/borrow_money'
+import home from './components/sidemenu/home'
+import router from './router/index.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -18,6 +21,5 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
-  components: { App,home },
-  template: '<home></home>'
+  render:h =>h(homepage)
 })
