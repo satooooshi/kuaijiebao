@@ -13,8 +13,8 @@
           <el-col :span="24">
             <el-menu :default-active="defaultActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" :router="true">
               <el-menu-item index="/">工作台</el-menu-item>
-              <el-menu-item index="/enterpriseManager">我要借款</el-menu-item>
-              <el-menu-item index="/orderManager">我要理财</el-menu-item>
+              <el-menu-item index="/systemManager">我要借款</el-menu-item>
+              <el-menu-item index="/enterpriseManager">我要理财</el-menu-item>
               <el-menu-item index="/systemManager">信用管理</el-menu-item>
               <el-menu-item index="/systemManager">数据统计</el-menu-item>
               <el-menu-item index="/systemManager">咨询</el-menu-item>
@@ -25,9 +25,9 @@
         <el-row v-show="$store.state.topNavState==='enterprise'">
           <el-col :span="24">
             <el-menu :default-active="defaultActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" :router="true">
-              <el-menu-item index="/enterpriseManager">企业信息</el-menu-item>
-              <el-menu-item index="/vehicleManager">车辆信息</el-menu-item>
-              <el-menu-item index="/deptManager">组织架构</el-menu-item>
+              <el-menu-item index="/enterpriseManager">理财产品管理</el-menu-item>
+              <el-menu-item index="/vehicleManager">我的债权</el-menu-item>
+              <el-menu-item index="/deptManager">债权交易</el-menu-item>
             </el-menu>
           </el-col>
         </el-row>

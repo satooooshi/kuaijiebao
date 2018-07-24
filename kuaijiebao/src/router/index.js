@@ -21,6 +21,10 @@ import NotFound from '@/components/404.vue'
 import Register from '@/views/admin/register.vue'
 import RegisterNext from '@/views/admin/registerNext.vue'
 import InfoSetting from '@/views/workbench/inform_setting.vue'
+import Deletemoney from '@/views/enterprise/delete.vue'
+import Buydebt from '@/views/dept/buy.vue'
+import Selldebt from '@/views/dept/sell.vue'
+
 
 // 懒加载方式，当路由被访问的时候才加载对应组件
 const Login = resolve => require(['@/views/login'], resolve)
@@ -86,6 +90,29 @@ let router = new Router({
       ]
     },
     {
+      path:'/debtManager',
+      type:'debt',
+      name:'debt',
+      component:Home ,
+      redirect:'/debt/list',
+      menuShow:true,
+      children:[
+        {
+          path:'/debt/list',
+          name:'借款申请',
+          component:{
+            default:EnterpriseList,
+            top: TopNav,
+            aside: LeftNav
+          },
+          leaf: true,
+          iconCls: 'el-icon-setting',
+          menuShow: true
+        }
+
+      ]
+    },
+    {
       path: '/enterpriseManager',
       type: 'enterprise',
       name: 'enterprise',
@@ -95,7 +122,7 @@ let router = new Router({
       children: [
         {
           path: '/enterprise/list',
-          name: '企业信息',
+          name: '选购理财产品',
           components: {
             default: EnterpriseList,
             top: TopNav,
@@ -106,22 +133,10 @@ let router = new Router({
           menuShow: true
         },
         {
-          path: '/enterprise/detail',
-          name: '企业详情',
-          components: {
-            default: EnterpriseDetail,
-            top: TopNav,
-            aside: LeftNav
-          },
-          leaf: true,
-          iconCls: 'el-icon-setting',
-          menuShow: false
-        },
-        {
           path: '/enterprise/add',
-          name: '添加企业',
+          name: '撤销理财产品',
           components: {
-            default: EnterpriseAdd,
+            default: Deletemoney,
             top: TopNav,
             aside: LeftNav
           },
@@ -129,18 +144,6 @@ let router = new Router({
           iconCls: 'el-icon-menu',
           menuShow: true
         },
-        {
-          path: '/enterprise/validate',
-          name: '企业认证',
-          components: {
-            default: EnterpriseValidate,
-            top: TopNav,
-            aside: LeftNav
-          },
-          leaf: true,
-          iconCls: 'el-icon-menu',
-          menuShow: true
-        }
       ]
     },
     {
@@ -153,7 +156,7 @@ let router = new Router({
       children: [
         {
           path: '/vehicle/list',
-          name: '车辆信息',
+          name: '我的债权信息',
           components: {
             default: VehicleManage,
             top: TopNav,
@@ -175,16 +178,28 @@ let router = new Router({
       children: [
         {
           path: '/dept/list',
-          name: '部门信息',
+          name: '购买债权',
           components: {
-            default: DeptManager,
+            default: Buydebt,
             top: TopNav,
             aside:  LeftNav
           },
           leaf: true, // 只有一个节点
           iconCls: 'iconfont icon-home', // 图标样式class
           menuShow: true
-        }
+        },
+        {
+          path: '/dept/sell',
+          name: '出售债权',
+          components: {
+            default: Selldebt,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        },
       ]
     }
   ]
