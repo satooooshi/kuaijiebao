@@ -25,11 +25,23 @@ import Deletemoney from '@/views/enterprise/delete.vue'
 import Buydebt from '@/views/dept/buy.vue'
 import Selldebt from '@/views/dept/sell.vue'
 
+import Applydebt from '@/views/debt/apply.vue'
+import Changedebt from '@/views/debt/change.vue'
+import Deletedebt from '@/views/debt/delete.vue'
+import Consultcre from '@/views/credit/search.vue'
+import managecre from '@/views/credit/manage.vue'
+import debtcount from '@/views/statistic/debtcounting.vue'
+import mmanagecount from '@/views/statistic/moneymanagement.vue'
+import autoconsult from '@/views/consult/auto.vue'
+import humanconsult from '@/views/consult/human.vue'
 
 // 懒加载方式，当路由被访问的时候才加载对应组件
 const Login = resolve => require(['@/views/login'], resolve)
 
 Vue.use(Router)
+
+const MyComponent= { template: '<div>STUB me.</div>' }
+
 
 let router = new Router({
   routes: [
@@ -89,29 +101,7 @@ let router = new Router({
         }
       ]
     },
-    {
-      path:'/debtManager',
-      type:'debt',
-      name:'debt',
-      component:Home ,
-      redirect:'/debt/list',
-      menuShow:true,
-      children:[
-        {
-          path:'/debt/list',
-          name:'借款申请',
-          component:{
-            default:EnterpriseList,
-            top: TopNav,
-            aside: LeftNav
-          },
-          leaf: true,
-          iconCls: 'el-icon-setting',
-          menuShow: true
-        }
 
-      ]
-    },
     {
       path: '/enterpriseManager',
       type: 'enterprise',
@@ -168,6 +158,7 @@ let router = new Router({
         }
       ]
     },
+
     {
       path: '/deptManager',
       type: 'enterprise',
@@ -201,7 +192,209 @@ let router = new Router({
           menuShow: true
         },
       ]
-    }
+    },
+
+
+    //************Debt Module***************//
+    {
+      path: '/debtManager',//these three name should be the same.
+      type: 'debt',        //
+      name: 'debt',        //
+      component: Home,
+      redirect: '/debt/application',    //should redirect to its children path
+      menuShow: true,
+      children: [
+        {
+          path: '/debt/application',
+          name: '借款申请',
+          components: {
+            default: Applydebt,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+    {
+      path: '/mydebtManager',
+      type: 'debt',
+      name: 'mydebt',
+      component: Home,
+      redirect: '/debt/update',
+      menuShow: true,
+      children: [
+        {
+          path: '/debt/update',
+          name: '修改个人借款申请',
+          components: {
+            default: Changedebt,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        },
+        {
+          path: '/debt/cancel',
+          name: '撒销个人借款申请',
+          components: {
+            default: Deletedebt,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+
+
+    //************Personal Credit (PC) Module***************//
+    {
+      path: '/pcManager',//these three name should be the same.
+      type: 'pc',        //
+      name: 'pc',        //
+      component: Home,
+      redirect: '/pc/check',    //should redirect to its children path
+      menuShow: true,
+      children: [
+        {
+          path: '/pc/check',
+          name: '查询当面信用额度',
+          components: {
+            default: Consultcre,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        },
+      ]
+    },
+    {
+      path: '/mypcManager',
+      type: 'pc',
+      name: 'mypc',
+      component: Home,
+      redirect: '/pc/upgrade',
+      menuShow: true,
+      children: [
+        {
+          path: '/pc/upgrade',
+          name: '信用额度管理',
+          components: {
+            default: managecre,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+
+    //************Statistics Module***************//
+    {
+      path: '/statisticsManager',//these three name should be the same.
+      type: 'statistics',        //
+      name: 'statistics',        //
+      component: Home,
+      redirect: '/stat/debt',    //should redirect to its children path
+      menuShow: true,
+      children: [
+        {
+          path: '/stat/debt',
+          name: '借贷款统计',
+          components: {
+            default: debtcount,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+    {
+      path: '/fpstatManager',
+      type: 'statistics',
+      name: 'fpstat',
+      component: Home,
+      redirect: '/stat/fp',
+      menuShow: true,
+      children: [
+        {
+          path: '/stat/fp',
+          name: '理财统计',
+          components: {
+            default: mmanagecount,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+
+    //************Counsel Module***************//
+    {
+      path: '/counselManager',//these three name should be the same.
+      type: 'counsel',        //
+      name: 'counsel',        //
+      component: Home,
+      redirect: '/counsel/list',    //should redirect to its children path
+      menuShow: true,
+      children: [
+        {
+          path: '/counsel/list',
+          name: '常见问题',
+          components: {
+            default: autoconsult,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+    {
+      path: '/onlinecounselManager',
+      type: 'counsel',
+      name: 'onlinecounsel',
+      component: Home,
+      redirect: '/counsel/online',
+      menuShow: true,
+      children: [
+        {
+          path: '/counsel/online',
+          name: '在线咨询',
+          components: {
+            default: humanconsult,
+            top: TopNav,
+            aside:  LeftNav
+          },
+          leaf: true, // 只有一个节点
+          iconCls: 'iconfont icon-home', // 图标样式class
+          menuShow: true
+        }
+      ]
+    },
+
+    { path: '/posts', component: MyComponent },
+
+
   ]
 });
 

@@ -3,14 +3,6 @@
     <p>您的当前信用额度为：{{rate}}</p>
     <el-col :span="24" class="warp-main" v-loading="loading" element-loading-text="拼命加载中">
       <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
-        <el-form :inline="true" :model="filters">
-          <el-form-item>
-            <el-input v-model="filters.name" placeholder="请输入产品编号" auto-complete="off" @keyup.enter.native="fetchData"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" v-on:click="fetchData">查询</el-button>
-          </el-form-item>
-        </el-form>
       </el-col>
       <el-table ref="multipleTable" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column prop="eNumber" label="变更时间" width="180" sortable></el-table-column>
@@ -64,13 +56,13 @@
         tableData: [{
           eNumber: '2018-03-06',
           eName: '按时还款',
-          eIndustry: '增加'
+          eIndustry: '增加',
           eRange: '200',
         },
           {
             eNumber: '2018-04-21',
             eName: '未按时还款',
-            eIndustry: '减少'
+            eIndustry: '减少',
             eRange: '500',
           }],
         multipleSelection: [],

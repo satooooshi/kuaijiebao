@@ -1,3 +1,5 @@
+<template>
+  <div>
 <el-collapse v-model="activeName" accordion>
   <el-collapse-item title="问题一" name="1">
     <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
@@ -20,6 +22,8 @@
     <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
   </el-collapse-item>
 </el-collapse>
+  </div>
+</template>
 <script>
   export default {
     data() {
