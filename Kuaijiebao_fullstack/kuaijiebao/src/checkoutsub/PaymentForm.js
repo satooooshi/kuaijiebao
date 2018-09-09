@@ -1,0 +1,55 @@
+import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import axios from "axios";
+import Cards from 'react-credit-cards';
+import 'react-credit-cards/es/styles-compiled.css';
+
+
+let row={id:"a",cardNum:"1234",name:"aikakwa",added:"12/12"};
+function PaymentForm() {
+    return (
+        <React.Fragment>
+            <Typography variant="title" gutterBottom>
+                Payment method
+            </Typography>
+            <Grid container spacing={24}>
+                <Grid item xs={12} md={6}>
+                    <TextField required id="cardName" label="Name on card" fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <TextField required id="cardNumber" label="Card number" fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <TextField required id="expDate" label="Expiry date" fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <TextField
+                        required
+                        id="cvv"
+                        label="CVV"
+                        helperText="Last three digits on signature strip"
+                        fullWidth
+                    />
+                </Grid>
+                <Cards
+                    number={row.cardNum}
+                    name={row.name}
+                    expiry={row.expiry}
+                    cvc={row.cvc}
+                />
+                <Grid item xs={12}>
+                    <FormControlLabel
+                        control={<Checkbox color="secondary" name="saveCard" value="yes" />}
+                        label="Remeber credit card details for next time"
+                    />
+                </Grid>
+            </Grid>
+        </React.Fragment>
+    );
+}
+
+export default PaymentForm;
