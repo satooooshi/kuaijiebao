@@ -15,15 +15,17 @@ import {
     BrowserRouter as Router,
     Route,
     Link,
+    Redirect
 } from "react-router-dom";
 import App from './App';
 import './App.css';
 import axios from "axios";
+import CryptoCard from "react-ui-cards";
 
 
 
 import DebtListView from "./DebtListView";
-import Myinfo from "./Myinfo";
+//import Myinfo from "./Myinfo";
 import DebtManagement from "./DebtManagement";
 import DebtApplication from "./DebtApplication";
 import QuestionDetail from "./QuestionDetail";
@@ -50,6 +52,9 @@ import Checkout from "./signup/Checkout";
 import Signin from "./signin/Signin";
 import DebtAdd from './debtAdd/DebtAdd';
 import Button from '@material-ui/core/Button';
+import Topup from './topup/Topup';
+import Myinfo from './myinfoModify/MyInfoModify';
+
 
 const hello = (props) => (
     <div>
@@ -176,7 +181,6 @@ class MyDebt extends Component{
     }
 }
 
-
 class MyFp extends Component{
 
     render() {
@@ -203,7 +207,9 @@ class Counsel extends Component{
     render(){
         return (
             <div>
+                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=978118325&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:978118325:53" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
                 <Qalist />
+
             </div>
 
         );
@@ -223,6 +229,8 @@ class Account extends Component{
     }
 
     render(){
+        let userId=localStorage.getItem('userId');
+        if(userId)
         return (
             <div>
                 <div>
@@ -234,12 +242,6 @@ class Account extends Component{
                             pathname: "/myinfo",
                             state: {  referrer:{user:{userId:12345,  email:"aikawa@qq.com"} } }
                         }}>myInfo management</Link>
-                    </li>
-                    <li>
-                        <Link to={{
-                            pathname: "/passwordManagement",
-                            state: {  referrer:{user:{userId:12345,  email:"aikawa@qq.com"} } }
-                        }}>change password</Link>
                     </li>
                     <li>
                         <Link to={{
@@ -258,8 +260,47 @@ class Account extends Component{
             </div>
 
         );
+        return(
+            <Redirect to="/signin"/>
+        );
     }
 }
+/*
+const fakeAuth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+        this.isAuthenticated = true;
+        let userId=localStorage.getItem('userId');
+        if(userId)this.isAuthenticated=true;
+        else this.isAuthenticated=false;
+        console.log(this.isAuthenticated);
+        return this.isAuthenticated;
+        //setTimeout(cb, 100); // fake async
+    },
+    signout(cb) {
+        this.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+};
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route
+        {...rest}
+        render={props =>
+            fakeAuth.authenticate() ? (
+                <Component {...props} />
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: "/signin",
+                        state: { from: props.location }
+                    }}
+                />
+            )
+        }
+    />
+);
+*/
 
 ReactDOM.render(
     <Router>
@@ -292,10 +333,12 @@ ReactDOM.render(
             <Route exact path="/account" render={(props) => <Account {...props}/>}/>
             <Route exact path="/myasset" render={(props) => <Account {...props}/>}/>
             <Route exact path="/myinfo" render={(props) => <Myinfo {...props}/>}/>
-            <Route exact path="/topup" render={(props) => <RateGraph {...props}/>}/>
+            <Route exact path="/topup" render={(props) => <Topup {...props}/>}/>
             <Route exact path="/myinfo/status" render={(props) => <MyinfoChangeStatus {...props}/>}/>
-            <Route exact path="/passwordmanagement" render={(props) => <PasswordManagement {...props}/>}/>
-            <Route exact path="/passwordmanagement/status" render={(props) => <PasswordChangeStatus {...props}/>}/>
+            {/*
+                <Route exact path="/passwordmanagement" render={(props) => <PasswordManagement {...props}/>}/>
+                < Route exact path="/passwordmanagement/status" render={(props) => <PasswordChangeStatus {...props}/>}/>
+            */}
             <Route exact path="/bankcardmanagement" render={(props) => <BankcardManagement {...props}/>}/>
             <Route exact path="/bankcardmanagement/add" render={(props) => <BankcardAdd {...props}/>}/>
             <Route exact path="/bankcardmanagement/add/status" render={(props) => <BankcardAddStatus {...props}/>}/>
@@ -307,8 +350,9 @@ ReactDOM.render(
             <Route exact path="/signin" render={(props) => <Signin {...props}/>}/>
 
 
-            <Route exact path="/hey" render={(props) => <Checkout {...props}/>}/>
             <Route exact path="/gra" render={(props) => <RateGraph {...props}/>}/>
+
+            <Route exact path="/new" render={(props) => <RateGraph {...props}/>}/>
 
 
 

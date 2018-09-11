@@ -134,7 +134,7 @@ const social = ['GitHub', 'Twitter', 'Facebook'];
 
 
 function getDayIncomeFromServer(userId,success) {
-    return axios.get('http://localhost:2222/assetflow/day/' + userId)
+    return axios.get('http://localhost:2222/assetflow/period/day/' + userId)
         .then(function (response) {
             console.log(response);
             return response.data;
@@ -156,6 +156,18 @@ function getBalanceFromServer(userId,success) {
         });
 }
 
+function getSpecFromServer(userId,success) {
+    return axios.get('http://localhost:2222/user/spec/'+userId)
+        .then(function (response) {
+            console.log(response);
+            return response.data;
+        })
+        .then(success)
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
 class Main extends Component{
 
     constructor(props) {
@@ -163,6 +175,8 @@ class Main extends Component{
         this.state = {
             data:[],
             balance:0,
+            income:0,
+            credit:0,
 
         };
     }
@@ -170,10 +184,13 @@ class Main extends Component{
     componentDidMount(){
         let userId=localStorage.getItem('userId');
         getDayIncomeFromServer(userId,(data)=>{
-           this.setState({data:data});
+           this.setState({income:data});
         });
         getBalanceFromServer(userId,(data)=>{
-            this.setState({assets:data});
+            this.setState({balance:data});
+        });
+        getSpecFromServer(userId,(data)=>{
+            this.setState({credit:data.credit});
         });
 
     }
@@ -190,7 +207,7 @@ class Main extends Component{
                             <Grid item md={6}>
                                 <div className={classes.mainFeaturedPostContent}>
                                     <Typography variant="display2" color="inherit" gutterBottom>
-                                        Title of a longer featured blog post
+                                        50 Personal Finance Tips That Will Change the Way You Think About ...
                                     </Typography>
                                     <Typography variant="headline" color="inherit" paragraph>
                                         3 Financial Assets That Can Make You A Fortune
@@ -204,12 +221,14 @@ class Main extends Component{
                     </Paper>
                     {/* End main featured post */}
                     {/* Sub featured posts */}
+                    {(localStorage.getItem('userId'))?
+                        <div>
                     <Grid container spacing={40} className={classes.cardGrid}>
                         <Grid item key='YesterdayIncome' xs={12} md={6}>
                             <Card className={classes.card}>
                                 <div className={classes.cardDetails}>
                                     <CardContent>
-                                        <Typography variant="headline">Yesterday Income</Typography>
+                                        <Typography variant="headline">Income Of Day</Typography>
                                         <Typography variant="subheading" color="textSecondary">
                                             ¥ {this.state.income}
                                         </Typography>
@@ -261,12 +280,9 @@ class Main extends Component{
                                     <CardContent>
                                         <Typography variant="headline">Your Personal Credit</Typography>
                                         <Typography variant="subheading" color="textSecondary">
-                                            ¥ {this.state.balance}
+                                            {this.state.credit} pts
                                         </Typography>
                                         <Typography variant="subheading" paragraph>
-                                        </Typography>
-                                        <Typography variant="subheading" color="primary">
-                                            Go see my stats.
                                         </Typography>
                                     </CardContent>
                                 </div>
@@ -291,7 +307,7 @@ class Main extends Component{
                                         <Typography variant="subheading" paragraph>
                                         </Typography>
                                         <Typography variant="subheading" color="primary">
-                                            Go see my stats.
+                                            Go see Finance Product.
                                         </Typography>
                                     </CardContent>
                                 </div>
@@ -305,6 +321,7 @@ class Main extends Component{
                             </Card>
                         </Grid>
                     </Grid>
+
                     {/* End sub featured posts */}
                     <Grid container spacing={40} className={classes.mainGrid}>
                         {/* Main content */}
@@ -356,6 +373,11 @@ class Main extends Component{
                         </Grid>
                         {/* End sidebar */}
                     </Grid>
+                        </div>
+                        :
+                        <Grid container spacing={40}  className={classes.cardGrid}>
+                        </Grid>
+                    }
                 </main>
 
                 {/* Footer */}

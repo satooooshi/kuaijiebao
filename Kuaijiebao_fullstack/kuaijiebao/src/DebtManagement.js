@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import {
     Link,
+    Redirect
 } from "react-router-dom";
 import axios from "axios";
 
@@ -108,6 +109,8 @@ class DebtManagement extends Component {
         const {classes} = this.props;
         let dataOne=this.state.dataOne;
         let dataTwo=this.state.dataTwo;
+        let userId=localStorage.getItem('userId');
+        if(userId)
         return (
             <div>
                 Ongoing Repayment List
@@ -130,14 +133,14 @@ class DebtManagement extends Component {
                                     <TableCell component="th" scope="row">
                                         {row.id}
                                     </TableCell>
-                                    <TableCell numeric>{row.amountRepayments}</TableCell>
+                                    <TableCell numeric>{discardFloatOf(row.amountRepayments,2)}</TableCell>
                                     <TableCell numeric>{parseDate(row.auditedDate)}</TableCell>
-                                    <TableCell numeric>{row.amountPerMonth}</TableCell>
-                                    <TableCell numeric>{row.numRepayments-row.repaidNum}</TableCell>
+                                    <TableCell numeric>{discardFloatOf(row.amountPerMonth,2)}</TableCell>
+                                    <TableCell numeric>{discardFloatOf(row.numRepayments-row.repaidNum,2)}</TableCell>
                                     <TableCell numeric><Button color="primary"
                                                                component={Link}
                                                                to={{
-                                                                    pathname: "/debtmanagement/repayment"
+                                                                    pathname: "/debtmanagement/repayment/status"
                                                                }}
                                                                onClick={()=>this.handleRepay(row.id)} >
                                         Repay
@@ -180,12 +183,21 @@ class DebtManagement extends Component {
                 </Paper>
             </div>
         );
+
+        return(
+            <Redirect to="/signin"/>
+        );
     }
 }
 
 DebtManagement.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
+//remain up to Nth float
+function discardFloatOf(num,n){
+    return Math.floor( num * Math.pow( 10, n ) ) / Math.pow( 10, n ) ;
+}
 
 //format Date
 function parseDate(date){

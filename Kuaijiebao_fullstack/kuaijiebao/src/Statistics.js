@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {
     Link,
+    Redirect
 } from "react-router-dom";
 import axios from "axios";
 
@@ -77,6 +78,9 @@ class statistics extends Component {
     render() {
         const {classes} = this.props;
         let data=this.state.data;
+
+        let userId=localStorage.getItem('userId');
+        if(userId)
         return (
             <div>
                 <Paper className={classes.root}>
@@ -156,6 +160,10 @@ class statistics extends Component {
                 </Paper>
 
             </div>
+        );
+
+        return(
+            <Redirect to="/signin"/>
         );
     }
 }

@@ -8,12 +8,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import axios from "axios";
 
+
 const products = [
-    { name: 'Product 1', desc: 'A nice thing', price: '$9.99' },
-    { name: 'Product 2', desc: 'Another thing', price: '$3.45' },
-    { name: 'Product 3', desc: 'Something else', price: '$6.51' },
-    { name: 'Product 4', desc: 'Best thing of all', price: '$14.11' },
-    { name: 'Shipping', desc: '', price: 'Free' },
+    { name: 'Plan 1', desc: 'For low amount loan ¥1 ~ ¥999999', price: '18.0%' },
+    { name: 'Plan 2', desc: 'For moderate amount loan ¥1000000 ~ ¥1999999', price: '12.0%' },
+    { name: 'Plan 3', desc: 'For relatively large amount loan ¥2000000 ~ ¥2999999', price: '9.0%' },
+    { name: 'Plan 4', desc: 'For large amount loan ¥3000000 ~ ¥3999999', price: '7.0%' },
+    { name: 'Plan 5', desc: 'For large amount loan ¥4000000 ~ ¥4999999', price: '4.5%' },
+    { name: 'Plan 6', desc: 'For loan within 7 days', price: 'Free 0%' },
 ];
 const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 const payments = [
@@ -49,37 +51,13 @@ function Review(props) {
                         <Typography variant="body2">{product.price}</Typography>
                     </ListItem>
                 ))}
-                <ListItem className={classes.listItem}>
-                    <ListItemText primary="Total" />
-                    <Typography variant="subheading" className={classes.total}>
-                        $34.06
-                    </Typography>
-                </ListItem>
             </List>
             <Grid container spacing={16}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <Typography variant="title" gutterBottom className={classes.title}>
-                        Shipping
+                        Calculation of annual rate
                     </Typography>
-                    <Typography gutterBottom>John Smith</Typography>
-                    <Typography gutterBottom>{addresses.join(', ')}</Typography>
-                </Grid>
-                <Grid item container direction="column" xs={12} sm={6}>
-                    <Typography variant="title" gutterBottom className={classes.title}>
-                        Payment details
-                    </Typography>
-                    <Grid container>
-                        {payments.map(payment => (
-                            <React.Fragment key={payment.name}>
-                                <Grid item xs={6}>
-                                    <Typography gutterBottom>{payment.name}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography gutterBottom>{payment.detail}</Typography>
-                                </Grid>
-                            </React.Fragment>
-                        ))}
-                    </Grid>
+                    <Typography variant="subheading" gutterBottom>(Loan Amount)x(Rate)/365x(Number of Repayments)</Typography>
                 </Grid>
             </Grid>
         </React.Fragment>

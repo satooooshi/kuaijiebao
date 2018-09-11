@@ -27,7 +27,7 @@ public class Debt {
 	private String description;
 	private int numRepayments;
 
-	private float rate;
+	private double rate;
 	private LocalDateTime appliedDate;
 	private Status status;
 
@@ -48,6 +48,7 @@ public class Debt {
 	private LocalDateTime repaidCompDate;
 
 	public Debt(){};
+
 
 	public Debt(String id, Integer debtSideId, Status status){
 

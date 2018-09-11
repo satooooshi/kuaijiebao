@@ -9,9 +9,16 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import {
     Link,
 } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import VirtualList from 'react-virtual-list';
 import axios from "axios";
 
 const styles = theme => ({
@@ -83,10 +90,9 @@ class Qalist extends Component{
     render(){
 
         const { classes } = this.props;
-        let questions = this.state.data.map(question =>
-            <Question question={question}/>
-        );
+        let data = this.state.data;
 
+        let myBigListOfItems=data;
         return (
             <div>
                 <div>
@@ -113,16 +119,10 @@ class Qalist extends Component{
                         Search
                     </Button>
                 </div>
-
-                <table>
-                    <tbody>
-                    <tr>
-                        <th>Title</th>
-                        <th>Answer</th>
-                    </tr>
-                    {questions}
-                    </tbody>
-                </table>
+                <MyVirtualList
+                    items={myBigListOfItems}
+                    itemHeight={100}
+                />
             </div>
 
 
@@ -131,23 +131,27 @@ class Qalist extends Component{
     }
 }
 
+const MyList = ({
+                    virtual,
+                    itemHeight,
+                }) => (
+    <ul style={virtual.style}>
+        {virtual.items.map(item => (
+            <li key={`item_${item.id}`} style={{height: itemHeight}}>
+                <Typography variant="title" gutterBottom >
+                    <Link to={{
+                        pathname: "/qalist/"+item.id,
+                        state: {  referrer:{item} }
+                    }}>{item.title}</Link>
+                </Typography>
+                <Typography variant="subheading" gutterBottom>{item.answer}</Typography>
+            </li>
+        ))}
+    </ul>
+);
 
-class Question extends Component{
+const MyVirtualList = VirtualList()(MyList);
 
-    render() {
-        return (
-            <div>
-                <tr>
-                    <td><Link to={{
-                        pathname: "/qalist/"+this.props.question.id,
-                        state: {  referrer:{ data:this.props.question } }
-                    }}>{this.props.question.title}</Link></td>
-                    <td>{this.props.question.answer}</td>
-                </tr>
-            </div>
-        )
-    }
-}
 
 
 Qalist.propTypes = {
@@ -155,3 +159,28 @@ Qalist.propTypes = {
 };
 
 export default withStyles(styles)(Qalist);
+
+/*
+<List disablePadding>
+                    <ListItem  key={product.id}>
+                        <ListItemText primary={product.title}
+                                      component={Link}
+                                      to={{
+                                          pathname: "/qalist/"+product.id,
+                                      }}/>
+                        <Typography variant="body2">{product.answer}</Typography>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleNext}
+                            className={classes.button}
+                            component={Link}
+                            to={{
+                                pathname: "/debtmanagement"
+                            }}
+                        >
+                            Got It.
+                        </Button>
+                    </ListItem>
+            </List>
+ */

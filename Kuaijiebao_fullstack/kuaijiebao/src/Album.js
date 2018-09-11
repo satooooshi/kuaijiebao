@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import axios from "axios";
+import CryptoCard from 'react-ui-cards';
 
 const styles = theme => ({
     appBar: {
@@ -197,9 +198,6 @@ function parseDate(date){
     if(date) return date[0]+'/'+date[1]+'/'+date[2];
     else return date;
 }
-//remain up to Nth float
-function discardFloatOf(num,n){
-    return Math.floor( num * Math.pow( 10, n ) ) / Math.pow( 10, n ) ;
-}
+
 
 export default withStyles(styles)(Album);

@@ -127,20 +127,15 @@ const archives = [
 
 const social = ['GitHub', 'Twitter', 'Facebook'];
 
-const Menu = (localStorage.getItem("userId")) ?
-    <Button variant="outlined" size="small" onClick={()=>{localStorage.removeItem('userId')}} component={Link} to={{
-    pathname: "/"}}>Sign out</Button>:
-    <div>
-    <Button variant="outlined" size="small" component={Link} to={{
-        pathname: "/signup"}}>Sign up</Button><hr/>
-    <Button variant="outlined" size="small" component={Link} to={{
-        pathname: "/signin"}}>Sign in</Button>
-    </div>;
-
-
 class Blog extends Component {
 
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            userId:'',
+        };
+    }
 
     //*********************************
     //
@@ -148,12 +143,16 @@ class Blog extends Component {
     //
     //*********************************
     componentDidMount() {
-        //localStorage.setItem('userId', 111);
+        this.setState({userId:localStorage.getItem('userId')});
     }
+
+    handleSignOut=()=>{
+      localStorage.removeItem("userId");
+    };
 
     render() {
         const {classes} = this.props;
-
+        let userId=this.state.userId;
         return (
             <React.Fragment>
                 <CssBaseline/>
@@ -173,7 +172,15 @@ class Blog extends Component {
                         <Button variant="outlined" size="small" component={Link} to={{
                             pathname: "/signup",
                         }}>
-                            {Menu}
+                            {(userId) ?
+                                <Button variant="outlined" size="small" onClick={this.handleSignOut} component={Link} to={{
+                                    pathname: "/"}}>Sign out</Button>:
+                                <div>
+                                    <Button variant="outlined" size="small" component={Link} to={{
+                                        pathname: "/signup"}}>Sign up</Button><hr/>
+                                    <Button variant="outlined" size="small" component={Link} to={{
+                                        pathname: "/signin"}}>Sign in</Button>
+                                </div>}
                         </Button>
                     </Toolbar>
                     <Toolbar variant="dense" className={classes.toolbarSecondary}>

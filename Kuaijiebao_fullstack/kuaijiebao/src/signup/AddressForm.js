@@ -129,7 +129,12 @@ class AddressForm extends Component {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField id="state" name="state" label="State/Province/Region" fullWidth/>
+                        <TextField id="state"
+                                   name="state"
+                                   label="State/Province/Region"
+                                   fullWidth
+                                   value={this.state.state}
+                                   onChange={this.handleChange('state')}/>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField

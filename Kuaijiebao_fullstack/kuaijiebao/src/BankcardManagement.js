@@ -81,7 +81,8 @@ class BankcardManagement extends Component {
 
     componentDidMount(){
         let userId=localStorage.getItem('userId');
-        getBankcardFromServer(userId,(data)=>{this.setState({data:data})});
+        getBankcardFromServer(userId,(data)=>{this.setState({data:data});console.log(data.length);});
+
     }
 
     handleRemove=(cardId)=>{
@@ -91,19 +92,7 @@ class BankcardManagement extends Component {
     render() {
         const {classes} = this.props;
         let data=this.state.data;
-        if(data===undefined)
-            return (
-                <div>
-                    <Button variant="contained" color="primary"
-                            component={Link}
-                            to={{
-                                pathname: "/bankcardmanagement/add",
-                                state: {  referrer:{user:{userId:12345,  email:"aikawa@qq.com"} } }
-                            }}
-                            onClick={()=>this.handlePost()}>
-                        Add New Card
-                    </Button>
-                </div>);
+
         return (
             <div>
                 Bankcard Management
@@ -111,9 +100,9 @@ class BankcardManagement extends Component {
                     <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
-                                <TableCell numeric>Card No.</TableCell>
-                                <TableCell numeric>Added Date</TableCell>
-                                <TableCell numeric>Operation</TableCell>
+                                <TableCell >Card No.</TableCell>
+                                <TableCell >Added Date</TableCell>
+                                {(data.length<=1)?<div>.</div>:<TableCell >Operation</TableCell>}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -128,12 +117,13 @@ class BankcardManagement extends Component {
                                                     cvc={row.cvc}
                                                 />
                                             </TableCell>
-                                            <TableCell numeric>{parseDate(row.addedDate)}</TableCell>
-                                            <TableCell numeric><Button color="primary" component={Link} to={{
+                                            <TableCell>{parseDate(row.addedDate)}</TableCell>
+                                            {(data.length<=1)?<div>.</div>:
+                                            <TableCell><Button color="primary" component={Link} to={{
                                                 pathname: "/bankcardmanagement/remove",
                                             }} onClick={() => this.handleRemove(row.id)}>
                                                 Remove
-                                            </Button></TableCell>
+                                            </Button></TableCell>}
                                         </TableRow>
                                     );
                                 })}</div>
@@ -154,6 +144,7 @@ class BankcardManagement extends Component {
 BankcardManagement.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
 
 //format Date
 function parseDate(date){

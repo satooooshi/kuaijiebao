@@ -40,54 +40,69 @@ function Review(props) {
     return (
         <React.Fragment>
             <Typography variant="title" gutterBottom>
-                Order summary
+                Application summary
             </Typography>
             <List disablePadding>
-                {products.map(product => (
-                    <ListItem className={classes.listItem} key={product.name}>
-                        <ListItemText primary={product.name} secondary={product.desc} />
-                        <Typography variant="body2">{product.price}</Typography>
+                    <ListItem className={classes.listItem}>
+                        <ListItemText primary="Loan Amount" />
+                        <Typography variant="body2">{localStorage.getItem('loanAmount')}</Typography>
                     </ListItem>
-                ))}
                 <ListItem className={classes.listItem}>
-                    <ListItemText primary="Total" />
-                    <Typography variant="subheading" className={classes.total}>
-                        $34.06
+                    <ListItemText primary="Annual Rate" />
+                    <Typography variant="body2">{getAnnualRate(localStorage.getItem('loanAmount'),localStorage.getItem('numRepayments'))}%</Typography>
+                </ListItem>
+
+                <ListItem className={classes.listItem}>
+                    <ListItemText primary="Estimated Total Repayment" />
+                    <Typography variant="subheading" className={classes.listItem}>
+                        ¥{discardFloatOf(localStorage.getItem('loanAmount')*1+localStorage.getItem('loanAmount')*0.09/365*localStorage.getItem('numRepayments'),0)}
+                    </Typography>
+                </ListItem>
+                <ListItem className={classes.listItem}>
+                    <ListItemText primary="# of Repayments" />
+                    <Typography variant="subheading" className={classes.listItem}>
+                        {localStorage.getItem('numRepayments')}
                     </Typography>
                 </ListItem>
             </List>
-            <Grid container spacing={16}>
-                <Grid item xs={12} sm={6}>
-                    <Typography variant="title" gutterBottom className={classes.title}>
-                        Shipping
-                    </Typography>
-                    <Typography gutterBottom>John Smith</Typography>
-                    <Typography gutterBottom>{addresses.join(', ')}</Typography>
-                </Grid>
-                <Grid item container direction="column" xs={12} sm={6}>
-                    <Typography variant="title" gutterBottom className={classes.title}>
-                        Payment details
-                    </Typography>
-                    <Grid container>
-                        {payments.map(payment => (
-                            <React.Fragment key={payment.name}>
-                                <Grid item xs={6}>
-                                    <Typography gutterBottom>{payment.name}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography gutterBottom>{payment.detail}</Typography>
-                                </Grid>
-                            </React.Fragment>
-                        ))}
-                    </Grid>
-                </Grid>
-            </Grid>
+
         </React.Fragment>
     );
+}
+
+//remain up to Nth float
+function discardFloatOf(num,n){
+    return Math.floor( num * Math.pow( 10, n ) ) / Math.pow( 10, n ) ;
+}
+
+function getAnnualRate(loanAmount,numRepay){
+    console.log(loanAmount);
+    let amount=loanAmount*1;
+    let rate=0;
+
+    if(numRepay<=7){
+        return rate;
+    }
+
+    if(amount>1&&amount<999999){
+        rate=18.0;
+    }else if(amount>=1000000&&amount<=1999999){
+        rate=12.0;
+    }else if(amount>=2000000&&amount<=2999999){
+        rate=9.0;
+    }else if(amount>=3000000&&amount<=3999999){
+        rate=7.0;
+    }else if(amount>=4000000&&amount<=4999999){
+        rate=4.5;
+    }else{
+        rate=0;
+    }
+    return rate;
 }
 
 Review.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
 
 export default withStyles(styles)(Review);

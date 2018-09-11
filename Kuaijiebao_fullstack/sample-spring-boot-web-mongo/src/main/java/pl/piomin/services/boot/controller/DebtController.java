@@ -92,11 +92,31 @@ public class DebtController {
 		d.setLoanAmount(form.getLoanAmount());
 		d.setDescription(form.getDescription());
 		d.setNumRepayments(form.getNumRepayments());
-		if(form.getNumRepayments()<10) {
+
+
+		//*****************************************
+		if(form.getNumRepayments()<=7) {
 			d.setRate(0);
-		}else{
-			d.setRate(18);
+		} else {
+			float amount = d.getLoanAmount();
+			double rate=0;
+			if (amount > 1 && amount < 999999) {
+				rate = 18.0;
+			} else if (amount >= 1000000 && amount <= 1999999) {
+				rate = 12.0;
+			} else if (amount >= 2000000 && amount <= 2999999) {
+				rate = 9.0;
+			} else if (amount >= 3000000 && amount <= 3999999) {
+				rate = 7.0;
+			} else if (amount >= 4000000 && amount <= 4999999) {
+				rate = 4.5;
+			} else {
+				rate = 0;
+			}
+			d.setRate(rate);
 		}
+		//*****************************************
+
 		LocalDateTime now = LocalDateTime.now();
 		d.setAppliedDate(now);
 		d.setStatus(SUBMITTED);
@@ -126,12 +146,12 @@ public class DebtController {
 		d.setCreditSideId(creditSideId);
 		d.setNextDue(d.getNextDue().plusMonths(1));
 		d.setFinalDue(d.getAuditedDate().plusMonths(d.getNumRepayments()));
-		d.setAmountRepayments(new Float(d.getLoanAmount()+d.getLoanAmount()*0.01*d.getRate()/365*d.getNumRepayments()));
+		d.setAmountRepayments(new Float(d.getLoanAmount()+d.getLoanAmount()*d.getRate()*d.getRate()/365*d.getNumRepayments()));
 		d.setAmountPerMonth(d.getAmountRepayments()/d.getNumRepayments());
 
 		UserSpec user=userSpecRepository.findByUserId(d.getDebtSideId());
 		user.setBalance(user.getBalance() + d.getLoanAmount());
-		AssetFlow flow=new AssetFlow(genStr.nextString(),user.getUserId(),d.getId(),d.getAmountPerMonth(),"IN", now);
+		AssetFlow flow=new AssetFlow(genStr.nextString(),user.getUserId(),d.getId(),d.getLoanAmount(),"IN", now);
 		afRepository.save(flow);
 		userSpecRepository.save(user);
 		return repository.save(d);
@@ -140,21 +160,24 @@ public class DebtController {
 	@GetMapping("/repay/{debtSideId}/{id}/{cardId}")
 	public Debt repayDebt(@PathVariable("id") String id, @PathVariable("debtSideId") Integer debtSideId, @PathVariable("cardId") String cardId) {
 		Debt d=repository.findOne(id);
+		UserSpec user=userSpecRepository.findByUserId(debtSideId);
 		if((d.getRepaidNum()+1)!=d.getNumRepayments()) {
 			d.setRepaidAmount(d.getRepaidAmount() + d.getAmountPerMonth());
 			d.setRepaidNum(d.getRepaidNum() + 1);
 			LocalDateTime now = LocalDateTime.now();
 			AssetFlow flow=new AssetFlow(genStr.nextString(),debtSideId,d.getId(),d.getAmountPerMonth(),"OUT", now);
 			afRepository.save(flow);
-			UserSpec user=userSpecRepository.findByUserId(debtSideId);
 			user.setBalance(user.getBalance() - d.getAmountPerMonth());
-			userSpecRepository.save(user);
 		}else{
 			LocalDateTime now = LocalDateTime.now();
 			d.setRepaidCompDate(now);
 			d.setStatus(REPAID);
+			AssetFlow flow=new AssetFlow(genStr.nextString(),debtSideId,d.getId(),d.getAmountPerMonth(),"OUT", now);
+			afRepository.save(flow);
+			user.setBalance(user.getBalance() - d.getAmountPerMonth());
+			user.setCredit(user.getCredit()+500);
 		}
-
+		userSpecRepository.save(user);
 		return repository.save(d);
 	}
 

@@ -58,6 +58,9 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public CalendarUser signUp(@RequestBody SignupForm form) {
+
+		//
+		//calender user
 		CalendarUser user=new CalendarUser();
 		user.setId(genInt.getRandomInt());
 		user.setEmail(form.getEmail());
@@ -65,6 +68,8 @@ public class UserController {
 		user.setLastName(form.getLastName());
 		user.setPassword(form.getPassword());
 
+		//
+		//bankcard
 		Bankcard card=new Bankcard();
 		card.setId(genStr.nextString());
 		card.setUserId(user.getId());
@@ -75,6 +80,20 @@ public class UserController {
 		LocalDateTime now = LocalDateTime.now();
 		card.setAddedDate(now);
 		bcRepository.save(card);
+
+		//userspec
+		UserSpec spec=new UserSpec();
+		spec.setId(genStr.nextString());
+		spec.setUserId(user.getId());
+		spec.setCredit(100);
+		spec.setAddress1(form.getAddress1());
+		spec.setAddress2(form.getAddress2());
+		spec.setCity(form.getCity());
+		spec.setState(form.getState());
+		spec.setCountry(form.getCountry());
+		spec.setZip(form.getZip());
+		userSpecRepository.save(spec);
+
 		return repository.save(user);
 	}
 
@@ -84,6 +103,16 @@ public class UserController {
 		user.setPassword(password);
 		repository.save(user);
 		return user;
+	}
+
+	@PutMapping("/{userId}")
+	public CalendarUser updateUser(@PathVariable("userId") Integer userId, @RequestBody CalendarUser form) {
+		CalendarUser user=repository.findById(userId);
+		user.setFirstName(form.getFirstName());
+		user.setLastName(form.getLastName());
+		user.setPassword(form.getPassword());
+		user.setEmail(form.getEmail());
+		return repository.save(user);
 	}
 
 	@GetMapping("/bankcard/{userId}")
@@ -115,12 +144,12 @@ public class UserController {
 		UserSpec spec=new UserSpec();
 		spec.setId(genStr.nextString());
 		spec.setUserId(form.getUserId());
-		spec.setAddress(form.getAddress());
 		spec.setBalance(form.getBalance());
 		spec.setAge(form.getAge());
 		spec.setIncome(form.getIncome());
 		spec.setWork(form.getWork());
 		spec.setDescription(form.getDescription());
+		spec.setCredit(100);
 		return userSpecRepository.save(spec);
 	}
 
@@ -129,19 +158,26 @@ public class UserController {
 		return userSpecRepository.findByUserId(userId);
 	}
 
-	@PutMapping("/spec")
-	public UserSpec updateUserSpec(@RequestBody UserSpec form) {
-		UserSpec spec=new UserSpec();
-		spec.setId(genStr.nextString());
-		spec.setUserId(form.getUserId());
-		spec.setAddress(form.getAddress());
-		spec.setBalance(form.getBalance());
+	@PutMapping("/spec/{userId}")
+	public UserSpec updateUserSpec(@PathVariable("userId") Integer userId, @RequestBody UserSpec form) {
+		UserSpec spec=userSpecRepository.findByUserId(userId);
+		spec.setId(spec.getId());
+		spec.setCity(form.getCity());
+		spec.setAddress1(form.getAddress1());
+		spec.setAddress2(form.getAddress2());
+		spec.setZip(form.getZip());
+		spec.setCountry(form.getCountry());
+		spec.setState(form.getState());
+		/*
 		spec.setAge(form.getAge());
 		spec.setIncome(form.getIncome());
 		spec.setWork(form.getWork());
 		spec.setDescription(form.getDescription());
+		*/
 		return userSpecRepository.save(spec);
 	}
+
+
 
 	@GetMapping("/balance/{id}")
 	public UserSpec getUserBalance(@PathVariable Integer id){

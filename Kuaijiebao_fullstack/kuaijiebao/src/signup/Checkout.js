@@ -86,6 +86,13 @@ function postNewUserOfUserSpecAndBankcardToServer(data,success) {
             password:data.password,
             email:data.email,
 
+            address1: data.address1,
+            address2:data.address2,
+            city: data.city,
+            zip: data.zip,
+            state: data.state,
+            country: data.country,
+
             name:data.name,
             expiry:data.expiry,
             cvc:data.cvc,

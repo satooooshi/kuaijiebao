@@ -20,10 +20,10 @@ function QuestionDetail(props) {
         <div>
             <Paper className={classes.root} elevation={1}>
                 <Typography variant="headline" component="h3">
-                    {props.location.state.referrer.data.title}
+                    {props.location.state.referrer.item.title}
                 </Typography>
                 <Typography component="p">
-                    {props.location.state.referrer.data.answer}
+                    {props.location.state.referrer.item.answer}
                 </Typography>
             </Paper>
         </div>

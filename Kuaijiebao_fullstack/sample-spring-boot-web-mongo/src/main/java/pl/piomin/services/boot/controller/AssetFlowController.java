@@ -51,10 +51,16 @@ public class AssetFlowController {
 
 
 	@GetMapping("/period/day/{userId}")
-	public List<AssetFlow> findByUserIdDay(@PathVariable("userId") Integer userId) {
+	public float findByUserIdDay(@PathVariable("userId") Integer userId) {
 		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime dayAgo=now.minusDays(1);
-		return afRepository.findByUserIdAndDateBetween(userId,dayAgo,now);
+		LocalDateTime dayAgo=now.minusDays(2);
+		List<AssetFlow> flows=afRepository.findByUserIdAndDateBetween(userId,dayAgo,now);
+		float sum=0;
+		for(int i=0;i<flows.size();i++){
+			if(flows.get(i).getInout().equals("IN"))
+				sum+=flows.get(i).getAmount();
+		}
+		return sum;
 	}
 
 

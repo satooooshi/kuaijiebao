@@ -89,7 +89,6 @@ class Signin extends Component {
     }
 
     handleSignin = () => {
-
             let data={
                 email: localStorage.getItem("email"),
                 password: localStorage.getItem("password"),
@@ -132,6 +131,16 @@ class Signin extends Component {
                                             }}>
                                                 Back
                                             </Button>
+                                        <Button
+                                            color="primary"
+                                            onClick={this.handleSignin}
+                                            className={classes.button}
+                                            component={Link} to={{
+                                            pathname: "/signup",
+                                        }}
+                                        >
+                                            Sign Up
+                                        </Button>
                                         <Button
                                             variant="contained"
                                             color="primary"

@@ -14,6 +14,9 @@ import AddressForm from './AddressForm';
 import Review from './Review';
 import PreInfo from "./PreInfo";
 import axios from "axios";
+import {
+    Link,
+} from "react-router-dom";
 
 const styles = theme => ({
     appBar: {
@@ -67,6 +70,29 @@ function getStepContent(step) {
     }
 }
 
+function addDebtToServer(data,userId,success) {
+    console.log(data);
+    return axios({
+        method: 'post',
+        url: 'http://localhost:2222/debt/apply',
+        data:{
+            debtSideId:userId,
+            loanAmount:data.loanAmount,
+            numRepayments:data.numRepayments,
+            description:data.description
+        }
+    })
+        .then(function (response) {
+            console.log("signin");
+            console.log(response);
+            return response.data;
+        })
+        .then(success)
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
 class DebtAdd extends Component {
 
     constructor(props) {
@@ -80,6 +106,21 @@ class DebtAdd extends Component {
     }
 
     handleNext = () => {
+
+        if(this.state.activeStep===2){
+            let data={
+                loanAmount:localStorage.getItem('loanAmount'),
+                numRepayments:localStorage.getItem('numRepayments'),
+                description:localStorage.getItem('description')
+            };
+            let userId=localStorage.getItem('userId');
+            addDebtToServer(data, userId,(data) => {});
+            localStorage.removeItem("loanAmount");
+            localStorage.removeItem("numPayments");
+            localStorage.removeItem("description");
+            console.log("finish cleaning...");
+        }
+
         const { activeStep } = this.state;
         this.setState({
             activeStep: activeStep + 1,
@@ -92,6 +133,7 @@ class DebtAdd extends Component {
             activeStep: activeStep - 1,
         });
     };
+
 
     render() {
         const { classes } = this.props;
@@ -123,12 +165,23 @@ class DebtAdd extends Component {
                             {activeStep === steps.length ? (
                                 <React.Fragment>
                                     <Typography variant="headline" gutterBottom>
-                                        Thank you for your order.
+                                        Loan Application Submitted.
                                     </Typography>
                                     <Typography variant="subheading">
-                                        Your order number is #2001539. We have emailed your oder confirmation, and will
-                                        send you an update when your order has shipped.
+                                        Your application is under auditing. Please Check Loan status at My Debt.
                                     </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={this.handleNext}
+                                        className={classes.button}
+                                        component={Link}
+                                        to={{
+                                            pathname: "/debtmanagement"
+                                        }}
+                                    >
+                                        Got It.
+                                    </Button>
                                 </React.Fragment>
                             ) : (
                                 <React.Fragment>
